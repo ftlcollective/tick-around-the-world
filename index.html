@@ -4,37 +4,61 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css" />
+    <meta
+      name="description"
+      content="World Clock: the live date and time in cities around the world, and in your own location."
+    />
+    <meta name="theme-color" content="#f1e4ff" />
     <title>World Clock - Tasneem Mahomed</title>
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23885df1' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- moment.js and moment time zone (moment first, then the time zone add-on) -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.48/builds/moment-timezone-with-data.min.js"></script>
   </head>
+
   <body>
     <div class="container">
-      <h1>World Clock</h1>
+      <header>
+        <h1><a href="./" data-home>World Clock</a></h1>
+        <p class="tagline">Tick around the world</p>
+      </header>
 
-      <select>
+      <label class="sr-only" for="city">Choose a city</label>
+      <select id="city">
         <option value="">Select a city..</option>
-        <option value="">London</option>
-        <option value="">New York</option>
-        <option value="">Auckland</option>
+        <option value="current">My current location</option>
       </select>
 
-      <div class="city">
-        <h2>Los Angeles 🇺🇸</h2>
-        <div class="date">August 15th 2022</div>
-        <div class="time">1:48:15 AM</div>
-      </div>
-      <div class="city">
-        <h2>Sydney 🇦🇺</h2>
-        <div class="date">August 15th 2022</div>
-        <div class="time">1:48:15 AM</div>
-      </div>
+      <div id="cities"></div>
+
+      <noscript>
+        <p class="message">The World Clock needs JavaScript to tell the time. Please turn it on.</p>
+      </noscript>
     </div>
+
     <footer>
-      This project was coded with ❤️ by Tasneem Mahomed and is
-      <a href="https://github.com/ftlcollective/tick-around-the-world" target="_blank">
-        open sourced on GitHub</a
+      This project was coded with ❤️ by <strong>Tasneem Mahomed</strong> and is
+      <a
+        href="https://github.com/ftlcollective/tick-around-the-world"
+        target="_blank"
+        rel="noopener"
+      >
+        on GitHub</a
       >
     </footer>
+
+    <p class="sr-only" id="announce" role="status" aria-live="polite"></p>
+
     <script src="javascript/index.js"></script>
   </body>
 </html>

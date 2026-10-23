@@ -1,0 +1,374 @@
+/* Flag emojis: Windows shows letters (like "US") instead of flags.
+   This font draws real flags, and only applies to flag characters.
+   From country-flag-emoji-polyfill (MIT), flag artwork by Twemoji (CC-BY 4.0). */
+@font-face {
+  font-family: "Twemoji Country Flags";
+  unicode-range: U+1F1E6-1F1FF, U+1F3F4, U+E0062-E0063, U+E0065, U+E0067,
+    U+E006C, U+E006E, U+E0073-E0074, U+E0077, U+E007F;
+  src: url("https://cdn.jsdelivr.net/npm/country-flag-emoji-polyfill@0.1.8/dist/TwemojiCountryFlags.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
+:root {
+  --ink: #2a1b4a;
+  --muted: rgba(42, 27, 74, 0.68);
+  --purple: #885df1;
+  --purple-deep: #5b34c7;
+  --pink: #ff6fae;
+  --font: "Twemoji Country Flags", "Poppins", "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 40px 16px 32px;
+  font-family: var(--font);
+  color: var(--ink);
+  background: linear-gradient(135deg, #f1e4ff 0%, #ffe3ef 50%, #e1ecff 100%);
+  background-attachment: fixed;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- The card ---------- */
+.container {
+  max-width: 580px;
+  margin: 24px auto;
+  padding: 32px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 60px rgba(91, 52, 199, 0.16);
+}
+
+/* ---------- Title with a little clock icon ---------- */
+header {
+  margin-bottom: 26px;
+  text-align: center;
+}
+h1 {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+h1 a:focus-visible,
+.back:focus-visible,
+footer a:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+h1::before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  border-radius: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E")
+      center / 32px no-repeat,
+    linear-gradient(135deg, var(--purple), var(--pink));
+  box-shadow: 0 14px 30px rgba(136, 93, 241, 0.4);
+}
+.tagline {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ---------- The select ---------- */
+select {
+  display: block;
+  width: 100%;
+  margin: 0 0 22px;
+  padding: 16px 52px 16px 20px;
+  border: 2px solid rgba(136, 93, 241, 0.25);
+  border-radius: 18px;
+  background: #fff
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23885df1' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    no-repeat right 18px center / 22px;
+  color: var(--ink);
+  font: 600 18px var(--font);
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(91, 52, 199, 0.12);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+select:hover:not(:disabled) {
+  border-color: var(--purple);
+  transform: translateY(-1px);
+}
+select:focus-visible {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 5px rgba(136, 93, 241, 0.22),
+    0 10px 26px rgba(91, 52, 199, 0.18);
+}
+select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- City cards: sunny by day, starry by night ---------- */
+.city {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 22px 26px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  background: linear-gradient(145deg, #fff4c9, #ffd9e6);
+  color: var(--ink);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pop 0.35s ease both;
+}
+.city[data-mood="night"] {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: linear-gradient(145deg, #231b5c, #5a35a8);
+  color: #fff;
+  box-shadow: 0 16px 36px rgba(35, 27, 92, 0.35);
+}
+.city:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(136, 93, 241, 0.25);
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.flag {
+  font-size: 0.95em;
+}
+.title-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: #fff;
+}
+.pin {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--purple-deep);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.date {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.zone {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.city[data-mood="night"] .date,
+.city[data-mood="night"] .zone {
+  color: rgba(255, 255, 255, 0.78);
+}
+.city[data-mood="night"] .eyebrow {
+  color: #d9c9ff;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.city[data-mood="night"] .chip {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.time {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: right;
+}
+.time small {
+  margin-left: 2px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+/* The bigger card when one city is chosen */
+.city--large {
+  padding: 30px;
+}
+.city--large h2 {
+  font-size: 32px;
+}
+.city--large .time {
+  font-size: 52px;
+}
+.city--large .date {
+  font-size: 16px;
+}
+
+/* ---------- Link back to the homepage ---------- */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid rgba(136, 93, 241, 0.25);
+  color: var(--purple-deep);
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.back::before {
+  content: "\2190";
+  font-size: 1.1em;
+}
+.back:hover {
+  border-color: var(--purple);
+  transform: translateX(-3px);
+  box-shadow: 0 8px 20px rgba(136, 93, 241, 0.2);
+}
+
+.message {
+  margin: 14px 0 0;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: #fff0f6;
+  color: #b3124f;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  max-width: 580px;
+  margin: 8px auto 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+footer strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+footer a {
+  color: var(--purple-deep);
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+footer a:hover {
+  color: #c4155f;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 480px) {
+  .container {
+    padding: 22px;
+    border-radius: 26px;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  .city,
+  .city--large {
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  h2,
+  .city--large h2 {
+    font-size: 22px;
+  }
+  .time {
+    font-size: 36px;
+    text-align: left;
+  }
+  .city--large .time {
+    font-size: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
